@@ -3,11 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <title>HTML5 Canvas</title>
-  <link rel="icon" href="https://fav.farm/🔥" />
+  <link rel="icon" href="https://fav.farm/ 🔥" />
 </head>
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  const canvas = document.querySelector("#draw");
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+ 
+  ctx.lineJoin = "round";
+  ctx.lineCap = "round";
+  ctx.lineWidth = 0;
+  ctx.strokeStyle = "green";
+  // ctx.globalCompositeOperation =;
+
+  let isDrawing = false;
+  let lastX= 0;
+  let lastY = 0;
+  let hue = 0;
+  let direction = true;
+
+  function draw(e){
+    if(!isDrawing) return
+
+    // change color
+
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+    ctx.beginPath();
+    // start from
+    ctx.moveTo(lastX,lastY);
+    // to 
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+
+    [lastX,lastY]= [e.offsetX , e.offsetY];
+
+    // increase hue by 1 after each stroke
+    hue++;
+    
+    // resets the hue when it reaches its boundary 
+
+    if (hue>=360)
+      hue = 0;
+
+    // varying line width
+    if(ctx.lineWidth >=100 || ctx.lineWidth <= 1){
+      direction = !direction;
+    }
+
+    if(direction)
+      ctx.lineWidth++;
+    else ctx.lineWidth--;
+    
+    
+
+  }
+
+  
+  canvas.addEventListener("mousedown",(e) => {
+    isDrawing = true;
+    [lastX,lastY]=[e.offsetX, e.offsetY];
+    
+  });
+  canvas.addEventListener("mousemove",draw);
+  canvas.addEventListener("mouseup", () => isDrawing = false);
+  canvas.addEventListener("mouseout", () => isDrawing = false);
+
+  
+
+
 </script>
 
 <style>
