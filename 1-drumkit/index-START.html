@@ -66,7 +66,7 @@
     const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
     if(!audio) return;   // stop the functaion from running for another value
     audio.currentTime =0;  // start the audio 
-    audio.play();
+    audio.play(); //method to play audio
     key.classList.add('playing');
     
   })
